@@ -3,3 +3,5 @@
 /out/
 /target/
 *.swp
+/project/project/
+/project/target/
