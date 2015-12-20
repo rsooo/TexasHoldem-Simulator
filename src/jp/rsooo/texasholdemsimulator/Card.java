@@ -6,8 +6,15 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.*;
 
-public class Card
+public class Card implements  Comparable<Card>
 {
+    @Override
+    public int compareTo(Card o) {
+        if (IDByRank(this.rank) > IDByRank(o.rank) || (IDByRank(this.rank) == IDByRank(o.rank) && IDBySuit(this.suit) > IDBySuit(o.suit)) )return -1;
+        if (IDByRank(this.rank) == IDByRank(o.rank) && IDBySuit(this.suit) == IDBySuit(o.suit) )return 0;
+        else return 1;
+    }
+
     public static enum Suit {SPADES, HEARTS, DIAMONDS, CLUBS};
     public static enum Rank {TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE};
 
@@ -126,10 +133,11 @@ public class Card
 
     }
 
-    public int Value()
+    public int ValueBJ()
     {
-        return Value(rank);
+        return ValueBJ(rank);
     }
+    public int Value(){return Value(rank);}
 
     Image CardImage()
     {
@@ -160,23 +168,23 @@ public class Card
 //	        given_away = true;
 //	    }
 
-    static int IDByRank(Card.Rank v)
+    public static int IDByRank(Card.Rank v)
     {
         switch(v)
         {
-            case TWO:       return 0;
-            case THREE:     return 1;
-            case FOUR:      return 2;
-            case FIVE:      return 3;
-            case SIX:       return 4;
-            case SEVEN:     return 5;
-            case EIGHT:     return 6;
-            case NINE:      return 7;
-            case TEN:       return 8;
-            case JACK:      return 9;
-            case QUEEN:     return 10;
-            case KING:      return 11;
-            case ACE:       return 12;
+            case TWO:       return 2;
+            case THREE:     return 3;
+            case FOUR:      return 4;
+            case FIVE:      return 5;
+            case SIX:       return 6;
+            case SEVEN:     return 7;
+            case EIGHT:     return 8;
+            case NINE:      return 9;
+            case TEN:       return 10;
+            case JACK:      return 11;
+            case QUEEN:     return 12;
+            case KING:      return 13;
+            case ACE:       return 14;
         }
         return 0;
     }
@@ -229,10 +237,10 @@ public class Card
     {
         switch(v)
         {
-            case 0:         return Card.Suit.SPADES;
-            case 1:         return Card.Suit.HEARTS;
-            case 2:         return Card.Suit.DIAMONDS;
-            case 3:         return Card.Suit.CLUBS;
+            case 3:         return Card.Suit.SPADES;
+            case 2:         return Card.Suit.HEARTS;
+            case 1:         return Card.Suit.DIAMONDS;
+            case 0:         return Card.Suit.CLUBS;
         }
         return Card.Suit.SPADES;
     }
@@ -241,10 +249,10 @@ public class Card
     {
         switch(v)
         {
-            case SPADES:    return 0;
-            case HEARTS:    return 1;
-            case DIAMONDS:  return 2;
-            case CLUBS:     return 3;
+            case SPADES:    return 3;
+            case HEARTS:    return 2;
+            case DIAMONDS:  return 1;
+            case CLUBS:     return 0;
         }
         return 0;
     }
@@ -287,12 +295,16 @@ public class Card
         return c.RankString() + " of " + c.SuitString();
     }
 
-    public static int Value(Card.Rank v)
+    public static int ValueBJ(Card.Rank v)
     {
-        return Value(v, false);
+        return ValueBJ(v, false);
     }
 
-    public static int Value(Card.Rank v, boolean ace_is_one)
+    public static int Value(Card.Rank r){
+        return Card.IDByRank(r);
+    }
+
+    public static int ValueBJ(Card.Rank v, boolean ace_is_one)
     {
         switch(v)
         {

@@ -8,9 +8,9 @@ import jp.rsooo.texasholdemsimulator.etc.Sfmt
  */
 class NormalShoe(size : Int) extends Shoe
 {
-  val cards : Array[Card] = new Array[Card](size * 52)
-  var index : Int = 0
-  val sfmt = new Sfmt(System.currentTimeMillis().asInstanceOf[Int])
+  private val cards : Array[Card] = new Array[Card](size * 52)
+  private var index : Int = 0
+  private val sfmt = new Sfmt(System.currentTimeMillis().asInstanceOf[Int])
 
   init
 
