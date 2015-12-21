@@ -23,7 +23,9 @@ object Main extends App {
 //  t(List(2,3,4,112,3))
 //  t(List())
 
-    s(List(2,3,4))
+//    s(List(100, 2,3,4))
+  val b = List(100, 2,3,4)
+  println(b.sortWith(_ > _).mkString(","))
 
 
   val deck = new NormalShoe(1)
@@ -54,6 +56,17 @@ object Main extends App {
       case _  => println("END")
     }
 
+  }
+
+  def p(strList: List[String]): Unit = {
+    strList match {
+      case (head :: Nil) => println(head) // 終端
+      case (head :: tail) => {
+        print(head)
+        p(tail)
+      }
+      case _ =>
+    }
   }
 
 }

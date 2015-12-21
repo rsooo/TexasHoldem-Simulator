@@ -38,26 +38,37 @@ object HandRank {
         case _ => (count, kicker)
       }
     }
-    _isStraight(cards, 0, -1) match {
+    _isStraight(cards.sorted, 0, -1) match {
       case (count, kicker) if count >= 4 => (true, kicker)
-      case (count, kicker) if count == 3 && kicker == 5=> if(cards.head.Value() == Card.IDByRank(Card.Rank.ACE)) (true, Card.IDByRank(Card.Rank.ACE)) else (false, -1)
+      case (count, kicker) if count == 3 && kicker == 5=> if(cards.head.Value() == Card.IDByRank(Card.Rank.ACE)) (true, Card.IDByRank(Card.Rank.FIVE)) else (false, -1)
       case _ => (false, -1)
     }
+  }
 
-    /*
-    def _isStraight(cards : List[Card], count : Int, prev : Int, kicker : Int) = {
-      cards match {
-        case List(c, _*) =>{
-          if(prev == c.Value() - 1) _isStraight(cards.tail, count + 1, c.Value(), if(count == 0) c.Value() else kicker)
-          else if(prev == c.Value()) _isStraight(cards.tail, count, c.Va)
-          else _isStraight(cards.tail, 0, )
+  def isFlush(cards : List[Card]) : (Boolean, List[Int]) = {
+    def _isFlush(cards : List[Card], nums : List[List[Int]]) : (Boolean, List[Int])= {
+      nums match {
+        case List(s,h,d,c) => {
+          cards match {
+            case List(card, _*) =>{
+              card.suit match {
+                case Card.Suit.SPADES => _isFlush(cards.tail, List(card.Value() :: s ,h,d,c))
+                case Card.Suit.HEARTS => _isFlush(cards.tail, List(s, card.Value() :: h,d,c))
+                case Card.Suit.DIAMONDS => _isFlush(cards.tail, List(s, h, card.Value() :: d, c))
+                case Card.Suit.CLUBS => _isFlush(cards.tail, List(s, h, d, card.Value() :: c))
+                case _ => throw new IllegalArgumentException("wrong suit")
+              }
+            }
+            case _ => {
+              val topNumberSuit = nums.sortWith(_.length > _.length).head
+              if(topNumberSuit.length >= 5) (true, topNumberSuit.reverse.take(5)) else (false, Nil)
+            }
+          }
         }
-        case _ =>{
-
-        }
+        case _ =>  throw new IllegalArgumentException("wrong argument")
       }
     }
-      */
-
+    _isFlush(cards.sorted, List(Nil, Nil, Nil, Nil))
   }
+
 }
