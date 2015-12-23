@@ -13,27 +13,29 @@ class PairCount(_pairCount : List[(Int,Int)] = Nil)  {
     pairCount.mkString(", ")
   }
 
-
+  def filterPair(count : Int) = {
+    pairCount.filter(_._2 == count)
+  }
 }
 
 object PairCount{
-  def create(cards : List[Card]) = {
-    new PairCount(sort(calc(cards, Nil, None)))
+  def calc(cards : List[Card]) = {
+    new PairCount(sort(_calc(cards, Nil, None)))
   }
 
-  def calc(cards : List[Card], ret : List[(Int, Int)], prev : Option[(Int, Int)]) : List[(Int,Int)] = {
+  def _calc(cards : List[Card], ret : List[(Int, Int)], prev : Option[(Int, Int)]) : List[(Int,Int)] = {
     cards match {
       case List(c, _*) => {
         val c = cards.head
         prev match {
           case Some(p) =>
             if (prev != null && c.Value() == p._1) {
-              calc(cards.tail, ret, Option(p._1, p._2 + 1))
+              _calc(cards.tail, ret, Option(p._1, p._2 + 1))
             } else {
-              calc(cards.tail, p :: ret, Option(c.Value(), 1))
+              _calc(cards.tail, p :: ret, Option(c.Value(), 1))
             }
           case None => {
-            calc(cards.tail, ret , Option(c.Value(), 1))
+            _calc(cards.tail, ret , Option(c.Value(), 1))
           }
         }
       }

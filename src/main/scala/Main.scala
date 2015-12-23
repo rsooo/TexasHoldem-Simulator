@@ -1,8 +1,8 @@
 import java.lang.System
 
-import jp.rsooo.texasholdemsimulator.Card
+import jp.rsooo.texasholdemsimulator.{CardHelper, Card}
 import jp.rsooo.texasholdemsimulator.etc.Sfmt
-import jp.rsooo.texasholdemsimulator.board.PairCount
+import jp.rsooo.texasholdemsimulator.board.{Kicker, PairCount}
 import jp.rsooo.texasholdemsimulator.deck.NormalShoe
 ;
 
@@ -24,9 +24,17 @@ object Main extends App {
 //  t(List())
 
 //    s(List(100, 2,3,4))
-  val b = List(100, 2,3,4)
-  println(b.sortWith(_ > _).mkString(","))
+//  val b = List(100, 2,3,4)
+//  println(b.sortWith(_ > _).mkString(","))
 
+//  val list1 = Kicker(List(3,2))
+//  val list2 = Kicker(List(3,2,3))
+
+//  if (list2 > list1)  println("big") else println("NG")
+
+//  val hand2 : List[Card] = CardHelper.cardList( List("8s", "8d", "8h", "8c", "Th", "2s", "Ac"))
+//  println(hand2.min.toString)
+//  println(hand2.sorted.head.toString)
 
   val deck = new NormalShoe(1)
   deck.shuffle
@@ -40,7 +48,7 @@ object Main extends App {
   val a = List(deck.pickCard(),deck.pickCard(),deck.pickCard(), deck.pickCard(), deck.pickCard(), deck.pickCard(), deck.pickCard()).sorted
   println(a.mkString(", "))
 
-  println( PairCount.create(a).toString)
+  println( PairCount.calc(a).toString)
 
 
   def t(list : List[Int]) : Unit = {
