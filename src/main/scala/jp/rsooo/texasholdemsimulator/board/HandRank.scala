@@ -24,9 +24,9 @@ object HandRank {
   def calc(cards : List[Card]) : (Int, Kicker) = {
 
 //    assert(cards.length == 7)
-
-    val pairCount = PairCount.calc(cards)
-    val (flush, flushKicker) = isFlush(cards)
+    val sortedCards = cards.sorted
+    val pairCount = PairCount.calc(sortedCards)
+    val (flush, flushKicker) = isFlush(sortedCards)
     val (straight, straightKicker) = isStraight(cards)
     val quadsPair = pairCount.filterPair(4)
     val setPair = pairCount.filterPair(3)
@@ -43,8 +43,8 @@ object HandRank {
     else if (straight) (STRAIGHT, straightKicker)
     else if (setPair.length >= 1) (THREE_OF_KIND, Kicker(setPair.head._1 ::  cards.filter(_.Value() != setPair.head._1).sorted.take(2).map(_.Value())))
     else if (pair.length >= 2) {
-      val (pairKickerVal1 :: pairKickerVal2 :: Nil) = pair.map(_._1).sorted.take(2)
-      (TWO_PAIR, Kicker(List(pairKickerVal1, pairKickerVal2, cards.filter(c => c.Value() != pairKickerVal1 && c.Value() != pairKickerVal2).sorted.max.Value())))
+      val (pairKickerVal1 :: pairKickerVal2 :: Nil) = pair.map(_._1).sorted.reverse.take(2)
+      (TWO_PAIR, Kicker(List(pairKickerVal1, pairKickerVal2, cards.filter(c => c.Value() != pairKickerVal1 && c.Value() != pairKickerVal2).sorted.head.Value())))
     }
     else if (pair.length >= 1) {
       val pairKickerVal = pair.map(_._1).sorted.head
@@ -58,7 +58,12 @@ object HandRank {
     def _isStraight(cards : List[Card], count : Int, kicker : Int) : (Int,Int)= {
       cards match {
         case List(c, c2, _*) => {
-          if(c2.Value() == c.Value() - 1) {/*println("1: " + count + " " + kicker);*/_isStraight(cards.tail, count + 1, if(count == 0) c.Value() else kicker)}
+          if(c2.Value() == c.Value() - 1) {
+            val nextcnt = count + 1
+            //println("1: " + nextcnt + " " + kicker)
+            if (nextcnt >= 4) (nextcnt, kicker)
+            else _isStraight(cards.tail, count + 1, if(count == 0) c.Value() else kicker)
+          }
           else if(c2.Value() == c.Value()) {/*println("2");*/ _isStraight(cards.tail, count, if(count == 0) c.Value() else kicker)}
           else {/*println("3");*/ _isStraight(cards.tail, 0, -1)}
         }
