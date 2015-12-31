@@ -1,9 +1,11 @@
 import java.lang.System
 
 import jp.rsooo.texasholdemsimulator.{CardHelper, Card}
-import jp.rsooo.texasholdemsimulator.etc.Sfmt
-import jp.rsooo.texasholdemsimulator.board.{Kicker, PairCount}
+import jp.rsooo.texasholdemsimulator.etc.{HandSimurator, Sfmt}
+import jp.rsooo.texasholdemsimulator.board.{HandRank, Kicker, PairCount}
 import jp.rsooo.texasholdemsimulator.deck.NormalShoe
+
+import scala.collection.mutable
 ;
 
 /**
@@ -37,13 +39,19 @@ object Main extends App {
 //  println(hand2.sorted.head.toString)
 
   val deck = new NormalShoe(1)
-  deck.shuffle
+/*  deck.shuffle
   println(deck.pickCard().toString)
   println(deck.pickCard().toString)
   println()
   println(deck.pickCard().toString)
   println(deck.pickCard().toString)
+  */
   //println(deck.toString)
+
+  val handSimurator = new HandSimurator(10000000)
+  handSimurator.printFiveCardHandProbability()
+  println("")
+  handSimurator.printSevenCardHandProbability()
 
   val a = List(deck.pickCard(),deck.pickCard(),deck.pickCard(), deck.pickCard(), deck.pickCard(), deck.pickCard(), deck.pickCard()).sorted
   println(a.mkString(", "))
